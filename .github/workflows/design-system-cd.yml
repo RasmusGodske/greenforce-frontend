@@ -81,24 +81,11 @@ jobs:
       - name: Install package dependencies
         run: yarn install --frozen-lockfile --non-interactive
 
-      - name: Get branch name (merge)
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
-
-      - name: Get branch name (pull request)
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: echo "BRANCH_NAME=$(echo ${GITHUB_HEAD_REF} | tr / -)" >> $GITHUB_ENV
-
-      - name: Get branch name (debug)
-        run: echo ${{ env.BRANCH_NAME }}
-
       - name: Is affected?
         id: affected
         uses: ./.github/actions/affected
         with:
-          base: ${{ env.is-main-branch == 'true' && 'HEAD~1' || format('origin/{0}', env.BASE_BRANCH) }}
+          base: ${{ env.is-main-branch == 'true' && 'HEAD~1' || format('origin/{0}', env.BRANCH_NAME) }}
           project: ${{ env.app-name }}
 
   publish_inbound:
