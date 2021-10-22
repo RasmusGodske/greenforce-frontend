@@ -33,7 +33,6 @@ on:
     branches:
       - main
       - renetnielsen/add-infrastructure-djorgensentest
-  pull_request: {}
   workflow_dispatch: {}
 
 jobs:
@@ -63,6 +62,7 @@ jobs:
       - name: Variable-Yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
+             echo "value of base branch $env.BASE_BRANCH"
         
       - name: Cache Yarn cache directory
         uses: actions/cache@v2
