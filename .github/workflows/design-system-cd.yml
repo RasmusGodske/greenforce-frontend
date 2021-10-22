@@ -85,7 +85,7 @@ jobs:
         id: affected
         uses: ./.github/actions/affected
         with:
-          base: ${{ env.is-main-branch == 'true' && 'HEAD~1' || format('origin/{0}', env.BRANCH_NAME) }}
+          base: ${{ env.is-main-branch == 'true' && 'HEAD~1' || format('origin/{0}', ${{ env.BRANCH_NAME }}) }}
           project: ${{ env.app-name }}
 
   publish_inbound:
