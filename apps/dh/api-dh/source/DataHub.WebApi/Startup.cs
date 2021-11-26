@@ -16,11 +16,16 @@ using System;
 using System.IO;
 using System.Reflection;
 using Energinet.DataHub.MeteringPoints.Client.Extensions;
+using Energinet.DataHub.WebApi.GraphQL;
+using GraphQL.MicrosoftDI;
+using GraphQL.Server;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -44,8 +49,16 @@ namespace Energinet.DataHub.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             AddDomainClients(services);
+
+            services.AddSingleton<ISchema, DataHubSchema>(serviceProvider => new DataHubSchema(new SelfActivatingServiceProvider(serviceProvider)));
+
+            services
+                .AddGraphQL(opt => opt.EnableMetrics = Environment.IsDevelopment())
+                .AddSystemTextJson()
+                .AddErrorInfoProvider(opt => opt.ExposeExceptionStackTrace = Environment.IsDevelopment());
+
+            services.AddLogging(builder => builder.AddConsole());
 
             // Register the Swagger generator, defining 1 or more Swagger documents.
             services.AddSwaggerGen(config =>
@@ -92,6 +105,9 @@ namespace Energinet.DataHub.WebApi
                 // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
                 app.UseSwaggerUI(options =>
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "DataHub.WebApi v1"));
+
+                // add GraphiQL UI to development only
+                app.UseGraphQLGraphiQL();
             }
 
             app.UseHttpsRedirection();
@@ -106,6 +122,8 @@ namespace Energinet.DataHub.WebApi
             {
                 endpoints.MapControllers();
             });
+
+            app.UseGraphQL<ISchema>();
         }
 
         private void AddDomainClients(IServiceCollection services)
