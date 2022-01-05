@@ -3,9 +3,9 @@ name: Energy Track and Trace
 env:
   app-name: app-ett
   BASE_BRANCH: ${{ github.ref_name }}
-  is-main-branch: ${{ github.ref == 'refs/heads/main' }}
+  is-main-branch: ${{ github.event.workflow_run.head_branch == 'refs/heads/main' }}
   is-pull-request: ${{ github.event.workflow_run.event  == 'pull_request' }}
-  is-push-request: ${{ github.event.workflow_run.event  == 'push' }}
+  is-push: ${{ github.event.workflow_run.event  == 'push' }}
   NODE_OPTIONS: --max-old-space-size=6144
   node-version: 14.x
   NX_MAX_PARALLEL: 2
@@ -27,10 +27,16 @@ jobs:
     env: 
       GITHUB_CONTEXT: ${{ toJSON(github) }}
       EVENT_NAME: ${{github.event_name}}
+      B_BRANCH: ${{github.event.workflow_run.pull_requests[0].base.ref}}
+      H_BRANCH: ${{github.event.workflow_run.pull_requests[0].head.ref}}
     runs-on: ubuntu-latest
     steps:
       - name: "test"
         run: echo "$GITHUB_CONTEXT"
+      - name: "B_BRANCH"
+        run: echo "$B_BRANCH"
+      - name: "H_BRANCH"
+        run: echo "$H_BRANCH"
       
 
   affected:
