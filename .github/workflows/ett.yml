@@ -32,8 +32,6 @@ jobs:
       - name: "test"
         run: echo "$GITHUB_CONTEXT"
       
-      - name: "test2"
-        run: echo "$EVENT_NAME"
 
   affected:
     name: Is affected?
