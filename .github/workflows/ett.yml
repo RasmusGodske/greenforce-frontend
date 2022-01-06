@@ -18,7 +18,9 @@ env:
 
 on:
   workflow_run:
-    workflows: ['GreenForce Frontend CI']
+    # Change back
+    #workflows: ['GreenForce Frontend CI']
+    workflows: ['Test Workflow']
     types: [completed]
 
 jobs:
