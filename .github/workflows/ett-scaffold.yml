@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - run: echo "test"
-  app:
+  build-app:
     name: Build app
     if: ${{ needs.affected.outputs.is-affected == 'true' }}
     needs: affected
@@ -72,8 +72,12 @@ jobs:
 
   container_merge:
     name: 'Merge: Host container'
-    if: ${{ github.ref == 'refs/heads/main' && github.event.workflow_run.event  == 'push' }}
     needs: app
+    if: | 
+      ${{
+        github.ref == 'refs/heads/main' &&
+        github.event.workflow_run.event  == 'push'
+      }}
     outputs:
       release_tag: "v0.0.1"
     runs-on: ubuntu-latest
