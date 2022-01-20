@@ -74,8 +74,10 @@ jobs:
     name: 'Merge: Host container'
     needs: app
     if: | 
-      github.ref == 'refs/heads/main' &&
-      github.event.workflow_run.event  == 'push'
+      ${{
+        github.ref == 'refs/heads/main' &&
+        github.event.workflow_run.event  == 'push'
+      }}
     outputs:
       release_tag: "v0.0.1"
     runs-on: ubuntu-latest
