@@ -25,17 +25,15 @@ import { ActivatedRoute } from '@angular/router';
 import { map, Subject, takeUntil } from 'rxjs';
 import { LetModule } from '@rx-angular/template';
 
-import { DhMeteringPointDataAccessApiStore } from '@energinet-datahub/dh/metering-point/data-access-api';
 import { WattSpinnerModule } from '@energinet-datahub/watt';
+import { DhMeteringPointDataAccessApiStore } from '@energinet-datahub/dh/metering-point/data-access-api';
+import { DhMeteringPointFeatureIdentityAndMasterDataModule } from '@energinet-datahub/dh/metering-point/feature-identity-and-master-data';
+import { dhMeteringPointIdParam } from '@energinet-datahub/dh/metering-point/routing';
+import { DhMeteringPointFeatureTabsModule } from '@energinet-datahub/dh/metering-point/feature-tabs';
 
-import { DhSecondaryMasterDataComponentScam } from './secondary-master-data/dh-secondary-master-data.component';
 import { DhBreadcrumbScam } from './breadcrumb/dh-breadcrumb.component';
-import { DhMeteringPointIdentityScam } from './identity/dh-metering-point-identity.component';
-import { dhMeteringPointIdParam } from './routing/dh-metering-point-id-param';
 import { DhMeteringPointNotFoundScam } from './not-found/dh-metering-point-not-found.component';
-import { DhMeteringPointPrimaryMasterDataScam } from './primary-master-data/dh-metering-point-primary-master-data.component';
-import { DhMeteringPointServerErrorScam } from './server-error/dh-metering-point-server-error.component';
-import { DhMeteringPointStatusBadgeScam } from './status-badge/dh-metering-point-status-badge.component';
+import { DhMeteringPointGeneralErrorScam } from './general-error/dh-metering-point-general-error.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,7 +51,7 @@ export class DhMeteringPointOverviewComponent implements OnDestroy {
   meteringPoint$ = this.store.meteringPoint$;
   isLoading$ = this.store.isLoading$;
   meteringPointNotFound$ = this.store.meteringPointNotFound$;
-  hasError$ = this.store.hasError$;
+  hasGeneralError$ = this.store.hasGeneralError$;
 
   constructor(
     private route: ActivatedRoute,
@@ -84,14 +82,12 @@ export class DhMeteringPointOverviewComponent implements OnDestroy {
   imports: [
     CommonModule,
     DhBreadcrumbScam,
-    DhMeteringPointIdentityScam,
+    DhMeteringPointFeatureIdentityAndMasterDataModule,
     DhMeteringPointNotFoundScam,
-    DhMeteringPointPrimaryMasterDataScam,
-    DhMeteringPointServerErrorScam,
-    DhMeteringPointStatusBadgeScam,
+    DhMeteringPointGeneralErrorScam,
     LetModule,
     WattSpinnerModule,
-    DhSecondaryMasterDataComponentScam,
+    DhMeteringPointFeatureTabsModule,
   ],
 })
 export class DhMeteringPointOverviewScam {}

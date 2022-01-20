@@ -47,6 +47,8 @@ namespace Energinet.DataHub.WebApi
             services.AddControllers()
                 .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+            services.AddHealthChecks();
+
             AddDomainClients(services);
 
             // Register the Swagger generator, defining 1 or more Swagger documents.
@@ -59,6 +61,7 @@ namespace Energinet.DataHub.WebApi
                     Description = "Backend-for-frontend for DataHub",
                 });
 
+                config.SchemaFilter<RequireNonNullablePropertiesSchemaFilter>();
                 config.SupportNonNullableReferenceTypes();
 
                 // Set the comments path for the Swagger JSON and UI.
@@ -107,6 +110,7 @@ namespace Energinet.DataHub.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
 

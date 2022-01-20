@@ -16,14 +16,16 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DhMeteringPointFeatureChildOverviewModule } from '@energinet-datahub/dh/metering-point/feature-child-overview';
+
+import {
+  dhMeteringPointIdParam,
+  DhMeteringPointOverviewGuard,
+} from '@energinet-datahub/dh/metering-point/routing';
 
 import {
   DhMeteringPointOverviewComponent,
   DhMeteringPointOverviewScam,
 } from './dh-metering-point-overview.component';
-import { dhMeteringPointIdParam } from './routing/dh-metering-point-id-param';
-import { DhMeteringPointOverviewGuard } from './routing/dh-metering-point-overview.guard';
 
 const routes: Routes = [
   {
@@ -34,10 +36,6 @@ const routes: Routes = [
         path: '',
         pathMatch: 'full',
         component: DhMeteringPointOverviewComponent,
-      },
-      {
-        path: '',
-        loadChildren: () => DhMeteringPointFeatureChildOverviewModule,
       },
     ],
   },

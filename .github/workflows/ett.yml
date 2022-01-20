@@ -1,4 +1,4 @@
-name: Energy Track and Trace
+name: EnergyOrigin
 
 env:
   app-name: app-ett
@@ -250,5 +250,5 @@ jobs:
 
             - Triggered by [Job][1] in [Repo][2]
 
-            [1]: ${{ env.JOB_URL }} 
+            [1]: ${{ env.JOB_URL }}
             [2]: ${{ github.server_url }}/${{ github.repository }}
